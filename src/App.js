@@ -4,36 +4,62 @@ import './App.css';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Time from './Time';
+import Timer from './Timer';
 
 const SECOND = 1000;
+let intervalId;
 
 class App extends Component {
   constructor(props){
     super(props);
-    let time1 = new Time(0,20,0);
-    let time2 = new Time(0,5,30);
+    let timer1 = new Timer(0,0,2);
+    let timer2 = new Timer(0,0,2);
     this.state = {
-      times : [time1,time2],
+      timers : [timer1,timer2],
+      timerIndex : null,
     };
   }
-  addTime(){
-    let time = new Time(10,0,0);
-    this.state.times.push(time)
+  addTimer(){
+    let timer = new Timer(10,0,0);
+    this.state.timers.push(timer)
     this.setState({
-      times : this.state.times,
+      timers : this.state.timers,
+    });
+  }
+  countDown(){
+    console.log("countdown")
+    let nowTimers = this.state.timers;
+    let newIndex = this.state.timerIndex;
+    const finish = nowTimers[this.state.timerIndex].countDown();
+    if (finish){
+      if(this.state.timerIndex != this.state.timers.length-1){
+        newIndex++
+        nowTimers[newIndex].countDown();
+      }else{
+        this.setState({
+          timerIndex: null,
+        })
+        clearInterval(intervalId)
+      }
+    }
+    this.setState({
+      timers: nowTimers,
+      timerIndex: newIndex,
     });
   }
   startTimer(){
-    console.log("Start Timer")
+    console.log("start")
+    this.setState({
+      timerIndex: 0,
+    });
+    intervalId = setInterval(()=>{this.countDown()},SECOND)
   }
   render() {
-    let timeList = this.state.times.map( time => {
+    let timerList = this.state.timers.map( timer => {
       return(
-        <li key={time.id}>{time.strHour()}h:{time.strMin()}m:{time.strSec()}s</li>
+        <li key={timer.id}>{timer.strHour()}h:{timer.strMin()}m:{timer.strSec()}s</li>
       );
     });
-    console.log(Object.prototype.toString.call(this.state.times));
     return (
       <div className="App">
         <header className="App-header">
@@ -47,8 +73,8 @@ class App extends Component {
         </header>
         <div className="Main">
           <ul>
-            {timeList}
-            <li key="add" onClick={()=>this.addTime()}>Add</li>
+            {timerList}
+            <li key="add" onClick={()=>this.addTimer()}>Add</li>
           </ul>
         </div>
         <footer>
