@@ -4,38 +4,9 @@ import './App.css';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import Time from './Time';
 
-class Time{
-  constructor(hour,minute,second){
-    this.id = Time.getUniqueStr();
-    this.hour = hour;
-    this.minute = minute;
-    this.second = second;
-  }
-  strHour(){
-    return this.convStr(this.hour);
-  }
-  strMin(){
-    return this.convStr(this.minute);
-  }
-  strSec(){
-    return this.convStr(this.minute);
-  }
-  convStr(num){
-    let str = num.toString();
-    if(str.length == 1){
-      str = "0"+str;
-    }
-    return str
-  }
-
-  static getUniqueStr(myStrong){
-    var strong = 1000;
-    if (myStrong) strong = myStrong;
-    return new Date().getTime().toString(16)  + Math.floor(strong*Math.random()).toString(16)
-   }
-
-}
+const SECOND = 1000;
 
 class App extends Component {
   constructor(props){
@@ -52,11 +23,12 @@ class App extends Component {
     this.setState({
       times : this.state.times,
     });
-    console.log(Object.prototype.toString.call(this.state.times));
+  }
+  startTimer(){
+    console.log("Start Timer")
   }
   render() {
     let timeList = this.state.times.map( time => {
-      console.log("done");
       return(
         <li key={time.id}>{time.strHour()}h:{time.strMin()}m:{time.strSec()}s</li>
       );
@@ -68,7 +40,7 @@ class App extends Component {
           <AppBar position="static" color="default">
             <Toolbar>
               <Typography variant="title" color="inherit">
-                Photos
+                Super Timer
               </Typography>
             </Toolbar>
           </AppBar>
@@ -79,6 +51,9 @@ class App extends Component {
             <li key="add" onClick={()=>this.addTime()}>Add</li>
           </ul>
         </div>
+        <footer>
+          <div><button onClick={()=>this.startTimer()}>Start</button></div>
+        </footer>
       </div>
     );
   }
