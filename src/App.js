@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Timer from './Timer';
+import StartStop from './StartStop'
 
 const SECOND = 1000;
 let intervalId;
@@ -17,6 +17,8 @@ class App extends Component {
     this.state = {
       timers : [timer1,timer2],
       timerIndex : null,
+      backup : [],
+      counting: false,
     };
   }
   addTimer(){
@@ -32,12 +34,17 @@ class App extends Component {
     let newIndex = this.state.timerIndex;
     const finish = nowTimers[this.state.timerIndex].countDown();
     if (finish){
+      nowTimers[newIndex].hour = this.state.backup[newIndex][0]
+      nowTimers[newIndex].minute = this.state.backup[newIndex][1]
+      nowTimers[newIndex].second = this.state.backup[newIndex][2]
       if(this.state.timerIndex != this.state.timers.length-1){
         newIndex++
         nowTimers[newIndex].countDown();
       }else{
         this.setState({
           timerIndex: null,
+          backup: [],
+          counting: false,
         })
         clearInterval(intervalId)
       }
@@ -49,10 +56,29 @@ class App extends Component {
   }
   startTimer(){
     console.log("start")
+    const backup = this.state.timers.map((val)=>{return [val.hour,val.minute,val.second]});
     this.setState({
       timerIndex: 0,
+      backup: backup,
+      counting: true,
     });
     intervalId = setInterval(()=>{this.countDown()},SECOND)
+  }
+  stopTimer(){
+    console.log("stop")
+    let nowTimers = this.state.timers;
+    for(let i=0;i<this.state.backup.length;i++){
+      nowTimers[i].hour = this.state.backup[i][0]
+      nowTimers[i].minute = this.state.backup[i][1]
+      nowTimers[i].second = this.state.backup[i][2]
+    }
+    this.setState({
+      timers: nowTimers,
+      timerIndex: null,
+      backup: [],
+      counting: false,
+    });
+    clearInterval(intervalId);
   }
   render() {
     let timerList = this.state.timers.map( timer => {
@@ -78,7 +104,7 @@ class App extends Component {
           </ul>
         </div>
         <footer>
-          <div><button onClick={()=>this.startTimer()}>Start</button></div>
+          <StartStop start={()=>this.startTimer()} stop={()=>this.stopTimer()} counting={this.state.counting}/>
         </footer>
       </div>
     );
