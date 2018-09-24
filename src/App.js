@@ -37,7 +37,7 @@ class App extends Component {
       nowTimers[newIndex].hour = this.state.backup[newIndex][0]
       nowTimers[newIndex].minute = this.state.backup[newIndex][1]
       nowTimers[newIndex].second = this.state.backup[newIndex][2]
-      if(this.state.timerIndex != this.state.timers.length-1){
+      if(this.state.timerIndex !== this.state.timers.length-1){
         newIndex++
         nowTimers[newIndex].countDown();
       }else{
