@@ -4,7 +4,9 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Timer from './Timer';
-import StartStop from './StartStop'
+import StartStop from './StartStop';
+import {HourKeyboad} from './Keyboard';
+import {MinuteKeyboad} from './Keyboard';
 
 const SECOND = 1000;
 let intervalId;
@@ -37,7 +39,7 @@ class App extends Component {
       nowTimers[newIndex].hour = this.state.backup[newIndex][0]
       nowTimers[newIndex].minute = this.state.backup[newIndex][1]
       nowTimers[newIndex].second = this.state.backup[newIndex][2]
-      if(this.state.timerIndex != this.state.timers.length-1){
+      if(this.state.timerIndex !== this.state.timers.length-1){
         newIndex++
         nowTimers[newIndex].countDown();
       }else{
@@ -103,6 +105,7 @@ class App extends Component {
             <li key="add" onClick={()=>this.addTimer()}>Add</li>
           </ul>
         </div>
+        <MinuteKeyboad/>
         <footer>
           <StartStop start={()=>this.startTimer()} stop={()=>this.stopTimer()} counting={this.state.counting}/>
         </footer>

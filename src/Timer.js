@@ -16,7 +16,7 @@ export default class Timer{
     }
     convStr(num){
       let str = num.toString();
-      if(str.length == 1){
+      if(str.length === 1){
         str = "0"+str;
       }
       return str
@@ -29,14 +29,14 @@ export default class Timer{
      }
      countDown(){
        let finish = false
-       if(this.second != 0){
+       if(this.second !== 0){
          this.second--;
        }else{
-         if(this.minute != 0){
+         if(this.minute !== 0){
            this.minute--;
            this.second = 59;
          }else{
-           if(this.hour != 0){
+           if(this.hour !== 0){
              this.hour--;
              this.minute = 59;
              this.second = 59;
