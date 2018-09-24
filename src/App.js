@@ -5,6 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Timer from './Timer';
 import StartStop from './StartStop'
+import Keyboard from './Keyboard'
 
 const SECOND = 1000;
 let intervalId;
@@ -103,6 +104,7 @@ class App extends Component {
             <li key="add" onClick={()=>this.addTimer()}>Add</li>
           </ul>
         </div>
+        <Keyboard timeScale="minute"/>
         <footer>
           <StartStop start={()=>this.startTimer()} stop={()=>this.stopTimer()} counting={this.state.counting}/>
         </footer>
