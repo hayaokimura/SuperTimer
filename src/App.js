@@ -5,6 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Timer from './Timer';
 import StartStop from './StartStop'
+import AddTimer from './AddTimer'
 
 const SECOND = 1000;
 let intervalId;
@@ -19,6 +20,7 @@ class App extends Component {
       timerIndex : null,
       backup : [],
       counting: false,
+      modalOpen: false,
     };
   }
   addTimer(){
@@ -80,6 +82,13 @@ class App extends Component {
     });
     clearInterval(intervalId);
   }
+  openModal(){
+    console.log("openModal")
+    this.setState({modalOpen:true})
+  }
+  closeModal(){
+    this.setState({modalOpen:false})
+  }
   render() {
     let timerList = this.state.timers.map( timer => {
       return(
@@ -100,9 +109,10 @@ class App extends Component {
         <div className="Main">
           <ul>
             {timerList}
-            <li key="add" onClick={()=>this.addTimer()}>Add</li>
+            <li key="add" onClick={()=>this.openModal()}>Add</li>
           </ul>
         </div>
+        <AddTimer modalOpen={this.state.modalOpen} closeModal={()=>this.closeModal()}/>
         <footer>
           <StartStop start={()=>this.startTimer()} stop={()=>this.stopTimer()} counting={this.state.counting}/>
         </footer>
