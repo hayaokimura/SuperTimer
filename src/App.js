@@ -4,8 +4,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Timer from './Timer';
-import StartStop from './StartStop'
-import AddTimer from './AddTimer'
+import StartStop from './StartStop';
+import AddTimer from './AddTimer';
 
 const SECOND = 1000;
 let intervalId;
@@ -112,7 +112,7 @@ class App extends Component {
             <li key="add" onClick={()=>this.openModal()}>Add</li>
           </ul>
         </div>
-        <AddTimer modalOpen={this.state.modalOpen} closeModal={()=>this.closeModal()}/>
+          <AddTimer modalOpen={this.state.modalOpen} closeModal={()=>this.closeModal()}/>
         <footer>
           <StartStop start={()=>this.startTimer()} stop={()=>this.stopTimer()} counting={this.state.counting}/>
         </footer>
